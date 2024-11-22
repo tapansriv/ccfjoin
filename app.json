@@ -1,0 +1,28 @@
+{
+  "endpoints": {
+    "/log/insert": {
+      "post": {
+        "js_module": "logging.js",
+        "js_function": "insert_data",
+        "forwarding_required": "always",
+        "redirection_strategy": "to_primary",
+        "authn_policies": ["jwt", "user_cert"],
+        "mode": "readwrite",
+        "openapi": {},
+        "interpreter_reuse": { "key": "singleton_interpreter" }
+      }
+    },
+    "/log/query": {
+      "post": {
+        "js_module": "logging.js",
+        "js_function": "run_query",
+        "forwarding_required": "always",
+        "redirection_strategy": "to_primary",
+        "authn_policies": ["jwt", "user_cert"],
+        "mode": "readwrite",
+        "openapi": {},
+        "interpreter_reuse": { "key": "singleton_interpreter" }
+      }
+    }
+  }
+}
