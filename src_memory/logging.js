@@ -41,13 +41,17 @@ export function insert_data(request) {
 function select(rows, index) {
   const results = [];
   var index2 = 0;
-  ccf.kv["join"].forEach(function(value, key, tbl) {
+  rows.forEach(function(row) {
     index2 += 1;
-    const row = JSON.parse(ccf.bufToStr(tbl.get(key)));
-    // results.push(row[index]);
-    const select_val = ccf.strToBuf(row[index].toString());
-    ccf.kv["select"].set(key, select_val);
+    results.push(row[index]);
   });
+  // ccf.kv["join"].forEach(function(value, key, tbl) {
+  //   index2 += 1;
+  //   const row = JSON.parse(ccf.bufToStr(tbl.get(key)));
+  //   results.push(row[index]);
+  //   // const select_val = ccf.strToBuf(row[index].toString());
+  //   // ccf.kv["select"].set(key, select_val);
+  // });
   console.log(index2);
   return results;
 }
@@ -82,8 +86,8 @@ function hashjoin(table1, index1, table2, index2) {
           const merged_row = elt.concat(row2);
           const k = ccf.strToBuf(index.toString()); 
           const v = ccf.strToBuf(JSON.stringify(merged_row));
-          ccf.kv["join"].set(k, v);
-          // results.push(merged_row);
+          // ccf.kv["join"].set(k, v);
+          results.push(merged_row);
           index += 1;
       });
     }
@@ -112,21 +116,23 @@ function distinct(arr) {
   var seen = {};
   var ret_arr = [];
   var length_arr = 0;
-  ccf.kv["select"].forEach(function(value, key, tbl) {
-    if (ccf.kv["distinct"].has(value) === false) {
-      ccf.kv["distinct"].set(value, value);  
-      ret_arr.push(ccf.bufToStr(value));
-      console.log(ccf.bufToStr(value));
+  // ccf.kv["select"].forEach(function(value, key, tbl) {
+  //   if (ccf.kv["distinct"].has(value) === false) {
+  //     ccf.kv["distinct"].set(value, value);  
+  //     ret_arr.push(ccf.bufToStr(value));
+  //     console.log(ccf.bufToStr(value));
+  //     length_arr += 1;
+  //   }
+  // });
+  for (var i = 0; i < arr.length; i++) {
+    if (!(arr[i] in seen)) {
       length_arr += 1;
+  	  ret_arr.push(arr[i]);
+  	  seen[arr[i]] = true;
     }
-  });
+  }
+  console.log("");
   console.log(length_arr);
-  // for (var i = 0; i < arr.length; i++) {
-  // 	if (!(arr[i] in seen)) {
-  // 		ret_arr.push(arr[i]);
-  // 		seen[arr[i]] = true;
-  // 	}
-  // }
   return ret_arr;
 }
 

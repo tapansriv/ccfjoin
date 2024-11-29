@@ -1,0 +1,2 @@
+these outputs did 750 rows per HTTP batch and performed all intermediates to CCF
+enclave (i.e. after the join runs, it writes that information to the enclave). 
