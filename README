@@ -1,2 +1,0 @@
-SRC puts everything in KV store. SRC_MEMORY keeps the return values of functions
-as javascript arrays in memory but not using the persistent KV store.
